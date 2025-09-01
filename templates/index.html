@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>{% block title %}Creative - Start Bootstrap Theme{% endblock %} </title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+        <!-- Bootstrap Icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css">
+        <!-- SimpleLightbox plugin CSS-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet">
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="../static/css/styles.css" rel="stylesheet">
+    <style>.d-none {
+    display: none;
+}
+
+    {{ bootstrap.load_css() }}
+.invalid-feedback {
+    display: none;
+}
+.btn.disabled {
+    pointer-events: none;
+    opacity: 0.65;
+}</style></head>
+    <body id="page-top">
+        <!-- Navigation-->
+
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="#page-top">Start Bootstrap</a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="{{url_for('index')}}">TODO List</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Masthead-->
+        <header class="masthead">
+            {% block content %}
+            <div class="container px-4 px-lg-5 h-100">
+                <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+                    <div class="col-lg-8 align-self-end">
+                        <h1 class="text-white font-weight-bold">What TO-DO?</h1>
+                        <hr class="divider">
+                    </div>
+                    <div class="col-lg-8 align-self-baseline">
+                        <p class="text-white-100 mb-5" style="color:white " >Welcome to What TO-DO! <br>
+                        Use our website to organize your life and gain productivity!</p>
+                        <a class="btn btn-primary btn-xl"  style="background-color: #CA9159ff"href="#about">Find Out More</a>
+                    </div>
+                    <div>
+                     </div>
+                </div>
+            </div>
+        </header>
+        <!-- About-->
+
+        <section class="page-section " style="background-color:  #CAA980ff" id="about">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <h2 class="text-white mt-0">Our selection of cafe's</h2>
+                        <p class="text-white-75 mb-4"><strong>Checkout propositions of our users, find your new favourite and share your favourites</strong> </p>
+                        <a class="btn btn-light btn-xl m-2" href="#">Add your favourite place!</a>
+                    </div>
+                    <div class="container">
+                    {% for post in cafes: %}
+                        <div class="row-cols-1">
+                        <div class="container-item">
+                            <div class="image">
+                                <img class="img" src="{{post.img_url}}"
+                                     onerror="this.onerror = null; this.src = 'https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-268020329.jpg'"
+                                     alt="img error" >
+                            </div>
+                            <div class="text">
+                                {{post.name}}
+
+                            </div>
+                             <div>{{post.location}}</div>
+                            <div>{% for id in range(5,9): %}
+                            {% if post[id] ==  1: %}
+                                {{attribute_list[id]}}:✅
+                                <br>
+                            {% else: %}
+                            {{attribute_list[id]}}:❌
+                                <br>
+                            {% endif %}
+                            {% endfor %}
+
+                        </div>
+                            <div>Seats: {{post.seats}}</div>
+                                                        <div>Price: {{post.coffee_price}}
+                                                        <a href="#">🗑️</a></div>
+
+                        </div>
+
+                        {% endfor %}</div>
+
+                        </div>
+
+                </div>
+            </div>
+
+        </section>
+        <!-- Services-->
+
+        <!-- Portfolio-->
+
+        <!-- Call to action-->
+
+        <!-- Contact-->
+
+        <!-- Footer-->
+        <footer class="bg-light py-5">
+            <div class="container px-4 px-lg-5"><div class="small text-center text-muted">Copyright © 2023 - Company Name</div></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- SimpleLightbox plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- * *                               SB Forms JS                               * *-->
+        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+{% endblock %}</body></html>
