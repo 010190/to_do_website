@@ -1,10 +1,11 @@
+{% from 'bootstrap4/form.html' import render_form %}
 <!DOCTYPE html>
 <html lang="en"><head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>{% block title %}Creative - Start Bootstrap Theme{% endblock %} </title>
+        <title>{% block title %}What TO-DO?{% endblock %} </title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
         <!-- Bootstrap Icons-->
@@ -19,7 +20,9 @@
     <style>.d-none {
     display: none;
 }
-
+body {
+    color:white;
+}
     {{ bootstrap.load_css() }}
 .invalid-feedback {
     display: none;
@@ -51,7 +54,6 @@
                 <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
                     <div class="col-lg-8 align-self-end">
                         <h1 class="text-white font-weight-bold">What TO-DO?</h1>
-                        <hr class="divider">
                     </div>
                     <div class="col-lg-8 align-self-baseline">
                         <p class="text-white-100 mb-5" style="color:white " >Welcome to What TO-DO! <br>
@@ -69,48 +71,55 @@
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-lg-8 text-center">
-                        <h2 class="text-white mt-0">Our selection of cafe's</h2>
-                        <p class="text-white-75 mb-4"><strong>Checkout propositions of our users, find your new favourite and share your favourites</strong> </p>
+                        <h2 class="text-white mt-0">Create your OWN TO-DO list!</h2>
+                        <p class="text-white-75 mb-4"><strong>Try out our TO-DO's manager and gain productivity! <br> Organize your life and bolster your success!</strong> </p>
                         <a class="btn btn-light btn-xl m-2" href="#">Add your favourite place!</a>
                     </div>
-                    <div class="container">
-                    {% for post in cafes: %}
+                    <div class="container" style="margin: 0 0 75px">
+                    {{ render_form(form, novalidate=True) }}
+                  <div class="row-cols-1">
+                                              <div class="container-item" style="color:black">
+                        <div>id</div>
+                      <div> to do:</div>
+                      <div> when:</div>
+                      <div> time:</div>
+                      <div>zrobione:</div>
+                                                  <div> usun</div>
+
+                                                  </div>
+                  </div>
+                        {% for post in result: %}
                         <div class="row-cols-1">
-                        <div class="container-item">
-                            <div class="image">
-                                <img class="img" src="{{post.img_url}}"
-                                     onerror="this.onerror = null; this.src = 'https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-268020329.jpg'"
-                                     alt="img error" >
-                            </div>
-                            <div class="text">
-                                {{post.name}}
+                        <div class="container-item" style="color:black">
+                            <div> {{post.id}}</div>
+                            <div>{{post.text}}</div>
+                                <div> {{post.date}}</div>
+                                <div> {{post.time}} </div>
+                                <div>
+                                    <a>
+                                            ✅
+                                    </a>
+                                </div>
+                            <div>
+                                    <a href="{{url_for('delete',id=post.id)}}">
 
-                            </div>
-                             <div>{{post.location}}</div>
-                            <div>{% for id in range(5,9): %}
-                            {% if post[id] ==  1: %}
-                                {{attribute_list[id]}}:✅
-                                <br>
-                            {% else: %}
-                            {{attribute_list[id]}}:❌
-                                <br>
-                            {% endif %}
+                                        usun
+                                    </a>
+                                </div>
+
                             {% endfor %}
+                    </div>
+                    <div>
+                    <div>
 
-                        </div>
-                            <div>Seats: {{post.seats}}</div>
-                                                        <div>Price: {{post.coffee_price}}
-                                                        <a href="#">🗑️</a></div>
 
-                        </div>
 
-                        {% endfor %}</div>
-
+                    </div>
                         </div>
 
                 </div>
-            </div>
-
+                                  </div>    </div>
+      </div>
         </section>
         <!-- Services-->
 

@@ -15,7 +15,7 @@
   background: white;
  display: grid;
  align-items: center;
- grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr  ;
+ grid-template-columns: 50px 320px 320px 320px 100px 50px  ;
  column-gap: 5px;
   float: left;
 }
@@ -2020,7 +2020,7 @@ progress {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #212529;
+  color: black;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
