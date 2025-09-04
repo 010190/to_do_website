@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="position-absolute top-50 start-50 translate-middle">
+                        <h1> Register</h1>
+                        {{ render_form(register, novalidate=True) }}
+
+                      </div>
+
+{% endblock %}

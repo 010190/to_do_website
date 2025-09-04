@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>{% block title %}What TO-DO?{% endblock %} </title>
+        <title>What TO-DO? </title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
         <!-- Bootstrap Icons-->
@@ -40,8 +40,15 @@ body {
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                        {% if  current_user.is_active %}
                         <li class="nav-item"><a class="nav-link" href="{{url_for('index')}}">TODO List</a></li>
-
+                                                <li class="nav-item"><a class="nav-link" href="{{url_for('profile')}}">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{url_for('login')}}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{url_for('register')}}">Register</a></li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{url_for('login')}}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{url_for('register')}}">Register</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -73,25 +80,16 @@ body {
                     <div class="col-lg-8 text-center">
                         <h2 class="text-white mt-0">Create your OWN TO-DO list!</h2>
                         <p class="text-white-75 mb-4"><strong>Try out our TO-DO's manager and gain productivity! <br> Organize your life and bolster your success!</strong> </p>
-                        <a class="btn btn-light btn-xl m-2" href="#">Add your favourite place!</a>
+                        <a class="btn btn-light btn-xl m-2" href="{{url_for('add')}}">Add your favourite place!</a>
                     </div>
                     <div class="container" style="margin: 0 0 75px">
-                    {{ render_form(form, novalidate=True) }}
-                  <div class="row-cols-1">
-                                              <div class="container-item" style="color:black">
-                        <div>id</div>
-                      <div> to do:</div>
-                      <div> when:</div>
-                      <div> time:</div>
-                      <div>zrobione:</div>
-                                                  <div> usun</div>
+                    {% if  current_user.is_active %}
+                        {% endif %}
 
-                                                  </div>
-                  </div>
-                        {% for post in result: %}
-                        <div class="row-cols-1">
-                        <div class="container-item" style="color:black">
-                            <div> {{post.id}}</div>
+                        {% if current_user.is_active %}
+{% for task in result %}
+<div class="container-item" style="color:black">
+                            <div>{{post.id}}</div>
                             <div>{{post.text}}</div>
                                 <div> {{post.date}}</div>
                                 <div> {{post.time}} </div>
@@ -108,8 +106,70 @@ body {
                                 </div>
 
                             {% endfor %}
-                    </div>
+                            {% else: %}
+                            <div class="container-item" style="color:black">
+                            <div>1</div>
+                            <div>Odebrac samochod</div>
+                                <div> 12.12.2025</div>
+                                <div> 12:12 </div>
+                                <div>
+                                    <a>
+                                            ✅
+                                    </a>
+                                </div>
+                            <div>
+                                    <a href="#">
+
+                                        usun
+                                    </a>
+                                </div>
+
+
+                        </div>
+
+
+<div class="container-item" style="color:black">
+                            <div>1</div>
+                            <div>Kolokwium z analizy!</div>
+                                <div> 01.12.2025</div>
+                                <div> 10:00 </div>
+                                <div>
+                                    <a>
+                                            ✅
+                                    </a>
+                                </div>
+                            <div>
+                                    <a href="#">
+
+                                        usun
+                                    </a>
+                                </div>
+
+
+                        </div>
+<div class="container-item" style="color:black">
+                            <div>1</div>
+                            <div>Wizyta u rodzicow!</div>
+                                <div> 06.12.2025</div>
+                                <div> 15:00 </div>
+                                <div>
+                                    <a>
+                                            ✅
+                                    </a>
+                                </div>
+                            <div>
+                                    <a href="#">
+
+                                        usun
+                                    </a>
+                                  {% endif %}
+                                </div>
+
+
+                        </div>
+
                     <div>
+
                     <div>
 
 
@@ -121,6 +181,7 @@ body {
                                   </div>    </div>
       </div>
         </section>
+
         <!-- Services-->
 
         <!-- Portfolio-->

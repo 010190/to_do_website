@@ -11,9 +11,9 @@
 <div class="container" >
   <div class="row">
     <a href="{{url_for('index')}}" style=" color:black;width: 200px; height: 200px; align-items: start;">←</a>
-    <div class="col-sm-12 col-md-8">
+    <div class="col-sm-12 col-md-8 position-absolute top-50 start-50 translate-middle">
 
-      <h1>Add a new cafe into the database</h1>
+      <h1 style="text-align:center;">Add new To-Do!</h1>
 
       {{ render_form(form, novalidate=True) }}
 

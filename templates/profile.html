@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% block content%}
+                    <div>  {{ render_form(form, novalidate=True) }}</div>
+
+<div class="row-cols-1">
+                                              <div class="container-item" style="color:black">
+                        <div>id</div>
+                      <div> to do:</div>
+                      <div> when:</div>
+                      <div> time:</div>
+                      <div>zrobione:</div>
+                                                  <div> usun</div>
+
+                                                  </div>
+                  </div>
+{% for task in result %}
+<div class="container-item" style="color:black">
+                            <div>{{post.id}}</div>
+                            <div>{{post.text}}</div>
+                                <div> {{post.date}}</div>
+                                <div> {{post.time}} </div>
+                                <div>
+                                    <a>
+                                            ✅
+                                    </a>
+                                </div>
+                            <div>
+                                    <a href="{{url_for('delete',id=post.id)}}">
+
+                                        usun
+                                    </a>
+                                </div>
+
+                            {% endfor %}
+
+    {% endblock %} </div>
