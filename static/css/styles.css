@@ -15,7 +15,7 @@
   background: white;
  display: grid;
  align-items: center;
- grid-template-columns: 50px 320px 320px 320px 100px 50px  ;
+ grid-template-columns: 50px 200px 200px 200px 200px 200px 200px  ;
  column-gap: 5px;
   float: left;
 }

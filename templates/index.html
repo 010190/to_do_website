@@ -43,8 +43,9 @@ body {
                         {% if  current_user.is_active %}
                         <li class="nav-item"><a class="nav-link" href="{{url_for('index')}}">TODO List</a></li>
                                                 <li class="nav-item"><a class="nav-link" href="{{url_for('profile')}}">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{url_for('login')}}">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{url_for('register')}}">Register</a></li>
+                                                                                                <li class="nav-item"><a class="nav-link" href="{{url_for('add')}}">Add</a></li>
+
+
                         {% else %}
                         <li class="nav-item"><a class="nav-link" href="{{url_for('login')}}">Login</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{url_for('register')}}">Register</a></li>
@@ -80,52 +81,12 @@ body {
                     <div class="col-lg-8 text-center">
                         <h2 class="text-white mt-0">Create your OWN TO-DO list!</h2>
                         <p class="text-white-75 mb-4"><strong>Try out our TO-DO's manager and gain productivity! <br> Organize your life and bolster your success!</strong> </p>
-                        <a class="btn btn-light btn-xl m-2" href="{{url_for('add')}}">Add your favourite place!</a>
+                        <a class="btn btn-light btn-xl m-2" href="{{url_for('add')}}">Add your tasks!</a>
                     </div>
                     <div class="container" style="margin: 0 0 75px">
-                    {% if  current_user.is_active %}
-                        {% endif %}
-
-                        {% if current_user.is_active %}
-{% for task in result %}
-<div class="container-item" style="color:black">
-                            <div>{{post.id}}</div>
-                            <div>{{post.text}}</div>
-                                <div> {{post.date}}</div>
-                                <div> {{post.time}} </div>
-                                <div>
-                                    <a>
-                                            ✅
-                                    </a>
-                                </div>
-                            <div>
-                                    <a href="{{url_for('delete',id=post.id)}}">
-
-                                        usun
-                                    </a>
-                                </div>
-
-                            {% endfor %}
-                            {% else: %}
-                            <div class="container-item" style="color:black">
-                            <div>1</div>
-                            <div>Odebrac samochod</div>
-                                <div> 12.12.2025</div>
-                                <div> 12:12 </div>
-                                <div>
-                                    <a>
-                                            ✅
-                                    </a>
-                                </div>
-                            <div>
-                                    <a href="#">
-
-                                        usun
-                                    </a>
-                                </div>
 
 
-                        </div>
+
 
 
 <div class="container-item" style="color:black">
@@ -162,7 +123,6 @@ body {
 
                                         usun
                                     </a>
-                                  {% endif %}
                                 </div>
 
 

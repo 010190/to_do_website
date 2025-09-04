@@ -1,6 +1,18 @@
 {% extends 'index.html' %}
 {% block content%}
-                    <div>  {{ render_form(form, novalidate=True) }}</div>
+<div style="justify-content:center;
+  display: flex;
+  align-items: center;">
+    <h1>{{user.nickname}}</h1>
+</div>
+
+<div style="justify-content:center;height: 0px;
+  display: flex;
+  align-items: center;">
+        <h2> {{user.done_todo}}/ {{user.undone_todo}}</h2>
+
+</div>
+<div class="position-absolute top-50 start-50 translate-middle">
 
 <div class="row-cols-1">
                                               <div class="container-item" style="color:black">
@@ -8,29 +20,32 @@
                       <div> to do:</div>
                       <div> when:</div>
                       <div> time:</div>
-                      <div>zrobione:</div>
-                                                  <div> usun</div>
+                      <div>Mark as done:</div>
+                                                  <div> Delete</div>
+                                                  <div>Is done yet?:</div>
 
                                                   </div>
                   </div>
 {% for task in result %}
 <div class="container-item" style="color:black">
-                            <div>{{post.id}}</div>
-                            <div>{{post.text}}</div>
-                                <div> {{post.date}}</div>
-                                <div> {{post.time}} </div>
+                            <div>{{task.id}}</div>
+                            <div>{{task.text}}</div>
+                                <div> {{task.date}}</div>
+                                <div> {{task.time}} </div>
                                 <div>
-                                    <a>
+                                    <a href="{{url_for('done', id=task.id)}}">
                                             ✅
                                     </a>
                                 </div>
                             <div>
-                                    <a href="{{url_for('delete',id=post.id)}}">
+                                    <a href="{{url_for('delete',id=task.id)}}">
 
-                                        usun
+                                        ❌
                                     </a>
                                 </div>
-
+                                <div>
+                                    {{task.is_done}}
+                                </div>
                             {% endfor %}
 
-    {% endblock %} </div>
+    {% endblock %} </div> </div>

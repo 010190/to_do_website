@@ -27,6 +27,7 @@ bootstrap = Bootstrap4(app)
 engine = create_engine("sqlite:///todo.db")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todo.db"
 
+meta = MetaData()
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -37,6 +38,7 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
+Base.metadata.create_all(engine)
 
 
 class Users(db.Model, UserMixin):
@@ -84,8 +86,8 @@ class Register(FlaskForm):
 
     submit = SubmitField('Submit')
 
-with app.app_context():
-    db.create_all()
+meta.create_all(engine)
+
 
 
 
@@ -95,35 +97,23 @@ def load_user(user_id):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    form = TaskForm()
-    name = session.get('name')
-    with Session(engine) as sess:
-        result = sess.execute(select(Users).where(Users.nickname == name)).scalars().all()
 
-    if form.validate_on_submit():
-        text = form.text.data
-        date = str(form.date.data)
 
-        time = str(form.time.data)
 
-        with app.app_context():
-            new_todo = ToDo(text=text, date=date, time=time)
-            db.session.add(new_todo)
-            db.session.commit()
-        print("todo added")
-        return redirect(url_for('index'))
-
-    return render_template('index.html', form=form, result=result)
+    return render_template('index.html')
 
 
 @app.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete(id):
+    # with app.app_context():
+    #     to_delete = db.session.execute(db.select(ToDo).where(ToDo.id == id)).scalar()
+    #     db.session.delete(to_delete)
+    #     db.session.commit()
+    #     print("deleted")
     with app.app_context():
-        to_delete = db.session.execute(db.select(ToDo).where(ToDo.id == id)).scalar()
-        db.session.delete(to_delete)
+        query = db.delete(ToDo).where(ToDo.id == id)
+        db.session.execute(query)
         db.session.commit()
-        print("deleted")
-
         return redirect(url_for('index'))
 
 
@@ -131,15 +121,15 @@ def delete(id):
 def login():
     login = Login()
     if login.validate_on_submit():
-        result = db.session.execute(db.select(Users).where(Users.nickname == login.name.data))
-        user = result.scalar()
-        print("logowanie")
+        name = login.name.data
+        with engine.connect() as conn:
+            user = db.session.query(Users).where(Users.nickname == name).first()
 
         if check_password_hash(user.password, login.password.data):
             login_user(user)
             session['user_name'] = user.nickname
-            print("zalogowano")
             return redirect(url_for('index'))
+        session['user_name'] = user.nickname
         db.session.commit()
 
     return render_template('login.html', login=login)
@@ -156,8 +146,6 @@ def register():
         db.session.commit()
         login_user(user)
         session['user_name'] = user.nickname
-        print(session['user_name'])
-        print("registred")
         return redirect(url_for('index'))
     return render_template('register.html', register=register)
 
@@ -165,8 +153,6 @@ def register():
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     form = TaskForm()
-    with app.app_context():
-        result = db.session.execute(db.select(ToDo)).scalars().all()
 
     if form.validate_on_submit():
         text = form.text.data
@@ -174,11 +160,15 @@ def add():
 
         time = str(form.time.data)
 
+        user_name= session['user_name']
         with app.app_context():
-            new_todo = ToDo(text=text, date=date, time=time)
+            user = db.session.query(Users).where(Users.nickname == user_name).first()
+            new_todo = ToDo(text=text, date=date, time=time, user_id = user.id)
+            undo_todos = len(db.session.query(ToDo).where(ToDo.is_done == 0).all())
+            user.undone_todo = undo_todos
             db.session.add(new_todo)
             db.session.commit()
-        print("todo added")
+
         return redirect(url_for('index'))
     return render_template('add.html', form=form)
 
@@ -186,11 +176,25 @@ def add():
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     name = session['user_name']
-    form = TaskForm()
-    with Session(engine) as sess:
-        result = sess.execute(select(Users).where(Users.nickname == name)).scalars().all()
-    return render_template('profile.html', result=result, form=form)
+    with engine.connect() as conn:
+        user = db.session.query(Users).where(Users.nickname == name).first()
+        undo_todos = len(db.session.query(ToDo).where(ToDo.is_done == 0).where(ToDo.user_id == user.id).all())
+        user.undone_todo = undo_todos
+        result = db.session.query(ToDo).where(ToDo.user_id == user.id ).all()
+        db.session.commit()
+        return render_template('profile.html', result=result, user=user)
 
+@app.route('/done/<int:id>', methods=['GET', 'POST'])
+def done(id):
+    with engine.connect() as conn:
+         task = db.session.query(ToDo).where(ToDo.id == id).first()
+         task.is_done = True
+         print(task.is_done)
+         user = db.session.query(Users).where(Users.id == task.user_id).first()
+         if user.done_todo == 0:
+            user.done_todo += 1
+         db.session.commit()
+    return redirect(url_for('profile'))
 
 if __name__ == '__main__':
 
